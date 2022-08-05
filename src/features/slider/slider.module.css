@@ -1,0 +1,23 @@
+.slider, .slider *{
+    box-sizing: border-box;
+}
+
+.slider.autoPlay {
+
+}
+
+.slider.loop {
+
+}
+
+.slider {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.sliderInner {
+    flex: 1;
+    flex-shrink: 0;
+    position: relative;
+}

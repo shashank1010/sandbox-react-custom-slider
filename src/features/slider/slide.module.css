@@ -1,0 +1,59 @@
+.slide {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10vw;
+    background-color: #fff;
+}
+
+.slide.willActivate {
+}
+
+
+.slide.willDeactivate {
+}
+
+.slide[data-effect=fade] {
+    transition: .3s opacity;
+    opacity: 0;
+}
+
+.slide.activeSlide {
+    z-index: 1000;
+}
+
+.slide.activeSlide[data-effect=fade] {
+    background: #ccc;
+    visibility: visible;
+    opacity: 1;
+}
+
+.slide[data-effect=slide] {
+    transition: .3s transform;
+    transform: translateX(100%);
+}
+
+
+/* .slide.willActivePrev[data-effect=slide] {
+    transform: translateX(-100%);
+}
+
+.slide.willActiveNext[data-effect=slide] {
+    transform: translateX(100%);
+} */
+
+.slide.activeSlide[data-effect=slide] {
+    transform: translateX(0);
+}
+
+
+/* .slide.willDeactivatePrev.willDeactivate[data-effect=slide] {
+    transform: translateX(-100%);
+}
+
+.slide.willDeactivateNext.willDeactivate[data-effect=slide] {
+    transform: translateX(100%);
+} */

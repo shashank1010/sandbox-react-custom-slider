@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useCallback } from 'react';
 import './App.css';
+import { Slide, Slider } from './features/slider';
+import { SlideType } from './features/slider/sliderSlice';
+
+const slides = [
+  {text: "Slide 1"},
+  {text: "Slide 2"},
+  {text: "Slide 3"}
+]
 
 function App() {
+  const onAdd = useCallback(() => {
+    slides.push({ text: `Slide ${slides.length + 1}`})
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className="App">
+      <Slider loop onAdd={onAdd}>
+        {
+          useCallback((slide: SlideType, index: number, {currentIndex}) => {
+            return (
+              <Slide key={slide as string} index={index} active={currentIndex === index}>
+                { slides[index].text }
+              </Slide>
+            )
+          }, [])
+        }
+      </Slider>
+    </main>
   );
 }
 
