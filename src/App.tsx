@@ -21,7 +21,9 @@ function App() {
           useCallback((slide: SlideType, index: number, {currentIndex}) => {
             return (
               <Slide key={slide as string} index={index} active={currentIndex === index}>
-                { slides[index].text }
+                <h1>{ slides[index].text }</h1>
+
+                
               </Slide>
             )
           }, [])

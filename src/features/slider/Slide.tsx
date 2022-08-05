@@ -15,7 +15,7 @@ interface SlideProps {
 const Slide: React.FC<PropsWithChildren<SlideProps>> = memo(({ index, children, active }) => {
     const elRef = useRef<HTMLDivElement | null>(null);
     const activeIndex = useAppSelector(getCurrentIndex);
-    const {effect = "fade"} = useSliderContext();
+    const {effect = "slide"} = useSliderContext();
     const goLeft = activeIndex > index;
 
     

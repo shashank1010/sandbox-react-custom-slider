@@ -5,7 +5,20 @@ import { getSlides, goToNext, goToSlide, goToPrevious, getCurrentIndex, getPlayi
 
 import navigationStyles from "./navigation.module.css";
 import cn from "classnames";
-import { useState } from "react";
+import { Children, PropsWithChildren, useEffect, useRef, useState } from "react";
+
+type PaginationContainer = { activeIndex: number, parentRef: React.MutableRefObject<HTMLDivElement | null> }
+const Paginated: React.FC<PropsWithChildren<PaginationContainer>> = ({ children, activeIndex }) => {
+    const count = ([] as any[]).concat(Children.map(children, (child) => child)).length;
+
+    useEffect(() => {
+        
+    }, [count, activeIndex]);
+    
+    return (
+        <>{children}</>
+    )
+}
 
 
 const Thumb: React.FC<{ active: boolean; index: number; onClick: (index: number) => void}> = ({ onClick, index, active }) => {
@@ -17,11 +30,12 @@ const Thumb: React.FC<{ active: boolean; index: number; onClick: (index: number)
 }
 
 const Navigation: React.FC = () => {
-    const { loop, showThumbnails, showNavigation, toggle, onAdd, toggleLoop } = useSliderContext();
-    const dispatch = useAppDispatch();
-    const slides = useAppSelector(getSlides);
-    const currentIndex = useAppSelector(getCurrentIndex);
-    const isPlaying = useAppSelector(getPlayingStatus) === SliderStatus.PLAYING;
+    const { loop, showThumbnails, showNavigation, toggle, onAdd, toggleLoop } = useSliderContext(),
+        ref= useRef<HTMLDivElement | null>(null),
+        dispatch = useAppDispatch(),
+        slides = useAppSelector(getSlides),
+        currentIndex = useAppSelector(getCurrentIndex),
+        isPlaying = useAppSelector(getPlayingStatus) === SliderStatus.PLAYING;
 
     const goNext = () => {
         dispatch(goToNext({ loop }))
@@ -46,9 +60,9 @@ const Navigation: React.FC = () => {
 
     
     return (
-        <div className={navigationStyles.navigationContainer}>
+        <div className={navigationStyles.navigationContainer} ref={ref}>
             <button title="Previous" className={navigationStyles.button} key="prev" onClick={onPrev}>{"👈"}</button>
-            {renderThumbs()}
+            <Paginated parentRef={ref} activeIndex={currentIndex}>{renderThumbs()}</Paginated>
             <button title="Next" className={navigationStyles.button} key="next" onClick={goNext}>{"👉"}</button>
             <span className={navigationStyles.divider}></span>
             <button title={isPlaying ? "Pause" : "Play"} className={cn(navigationStyles.button, navigationStyles.buttonPause)} key="pause" onClick={toggle}>{isPlaying ? "⏸" : "▶️"}</button>
