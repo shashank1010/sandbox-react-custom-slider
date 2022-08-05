@@ -16,45 +16,6 @@
 .slide.willDeactivate {
 }
 
-.slide[data-effect=fade] {
-    transition: .3s opacity;
-    opacity: 0;
-}
-
 .slide.activeSlide {
     z-index: 1000;
-}
-
-.slide.activeSlide[data-effect=fade] {
-    background: #ccc;
-    visibility: visible;
-    opacity: 1;
-}
-
-.slide[data-effect=slide] {
-    transition: .3s transform, .3s background-color .3s;
-    transform: translateX(100%);
-}
-
-
-.slide.willActivatePrev[data-effect=slide] {
-    transform: translateX(-100%);
-}
-
-.slide.willActivateNext[data-effect=slide] {
-    transform: translateX(100%);
-}
-
-.slide.activeSlide[data-effect=slide] {
-    transform: translateX(0);
-    background-color: lightblue;
-}
-
-
-.slide.willDeactivatePrev.willDeactivate[data-effect=slide] {
-    transform: translateX(-100%);
-}
-
-.slide.willDeactivateNext.willDeactivate[data-effect=slide] {
-    transform: translateX(100%);
 }

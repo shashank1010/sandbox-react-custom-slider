@@ -5,7 +5,7 @@ import { getSlides, goToNext, goToSlide, goToPrevious, getCurrentIndex, getPlayi
 
 import navigationStyles from "./navigation.module.css";
 import cn from "classnames";
-import { Children, PropsWithChildren, useEffect, useRef, useState } from "react";
+import { ChangeEvent, Children, PropsWithChildren, ReactEventHandler, SyntheticEvent, useEffect, useRef, useState } from "react";
 
 type PaginationContainer = { activeIndex: number, parentRef: React.MutableRefObject<HTMLDivElement | null> }
 const Paginated: React.FC<PropsWithChildren<PaginationContainer>> = ({ children, activeIndex }) => {
@@ -30,7 +30,7 @@ const Thumb: React.FC<{ active: boolean; index: number; onClick: (index: number)
 }
 
 const Navigation: React.FC = () => {
-    const { loop, showThumbnails, showNavigation, toggle, onAdd, toggleLoop } = useSliderContext(),
+    const { loop, showThumbnails, showNavigation, effect, toggle, onAdd, toggleLoop, changeEffect } = useSliderContext(),
         ref= useRef<HTMLDivElement | null>(null),
         dispatch = useAppDispatch(),
         slides = useAppSelector(getSlides),
@@ -47,6 +47,10 @@ const Navigation: React.FC = () => {
 
     const handleGoToIndex = (toIndex: number) => {
         dispatch(goToSlide({ toIndex }))
+    }
+
+    const handleChangeEffect = (e: ChangeEvent<HTMLSelectElement>) => {
+        changeEffect(e.target.value as "slide" | "fade")
     }
 
     if (!showNavigation) { return null; }
@@ -68,6 +72,10 @@ const Navigation: React.FC = () => {
             <button title={isPlaying ? "Pause" : "Play"} className={cn(navigationStyles.button, navigationStyles.buttonPause)} key="pause" onClick={toggle}>{isPlaying ? "⏸" : "▶️"}</button>
             <button title={loop ? "Once" : "Repeat"} className={cn(navigationStyles.button, navigationStyles.loop)} key="loop" onClick={toggleLoop}>{loop ? "🔂" : "🔁"}</button>
             <button title="Add Slide" className={cn(navigationStyles.button, navigationStyles.buttonAdd)} key="add" onClick={onAdd}>{"➕"}</button>
+            <select value={effect} onChange={handleChangeEffect}>
+                <option value="slide">Slide</option>
+                <option value="fade">Fade</option>
+            </select>
         </div>
     )
 }

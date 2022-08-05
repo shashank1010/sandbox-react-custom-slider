@@ -11,15 +11,17 @@ interface SliderContextInterface {
     onAdd: () => void;
     effect?: "slide" | "fade";
     toggleLoop?: () => void;
+    changeEffect: (effect: "slide" | "fade") => void;
 }
 
 
-const SliderContext = createContext<SliderContextInterface>({ toggle: () => {}, onAdd: () => {} });
+const SliderContext = createContext<SliderContextInterface>({ toggle: () => {}, onAdd: () => {}, changeEffect: () => {} });
 
 type ContextProps = Omit<SliderContextInterface, "toggle">
 export const SliderProvider: React.FC<PropsWithChildren<ContextProps>> = ({ children, ...value }) => {
     const { autoPlay, loop, onAdd } = value,
         [shouldLoop, setShouldLoop ] = useState(loop),
+        [effect, setEffect ] = useState<"slide" | "fade">("slide"),
         intervalRef = useRef<NodeJS.Timer | null>(null),
         dispatch = useAppDispatch(),
         isPlaying = useAppSelector(getPlayingStatus) === SliderStatus.PLAYING,
@@ -33,7 +35,8 @@ export const SliderProvider: React.FC<PropsWithChildren<ContextProps>> = ({ chil
         }, [isPlaying]),
         toggleLoop = useCallback(() => {
             setShouldLoop((val) => !val);
-        }, [isPlaying]);
+        }, [isPlaying]),
+        changeEffect = useCallback((effect: "slide" | "fade") => { setEffect(effect) }, []);
 
 
 
@@ -61,7 +64,7 @@ export const SliderProvider: React.FC<PropsWithChildren<ContextProps>> = ({ chil
     }, [currentIndex, isPlaying, shouldLoop])
 
     
-    return <SliderContext.Provider value={{...value, loop: shouldLoop, toggleLoop, toggle, onAdd: handleOnAdd }}>{children}</SliderContext.Provider>
+    return <SliderContext.Provider value={{...value, effect, loop: shouldLoop, changeEffect, toggleLoop, toggle, onAdd: handleOnAdd }}>{children}</SliderContext.Provider>
 }
 
 export const useSliderContext = () => {

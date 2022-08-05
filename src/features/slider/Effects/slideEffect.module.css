@@ -1,0 +1,27 @@
+.slideEffect {
+    transition: .3s transform, .3s background-color .3s;
+    transform: translateX(100%);
+}
+
+
+.slideEffect.slidePrev {
+    transform: translateX(-100%);
+}
+
+.slideEffect.slideNext {
+    transform: translateX(100%);
+}
+
+.slideEffect.slideActive {
+    transform: translateX(0);
+    background-color: lightblue;
+}
+
+
+.slideEffect.slideWillDeactivePrev[class*="willDeactivate"] {
+    transform: translateX(-100%);
+}
+
+.slideEffect.slideWillDeactiveNext[class*="willDeactivate"] {
+    transform: translateX(100%);
+}

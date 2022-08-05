@@ -26,7 +26,8 @@ const defaultProps = {
     autoPlay: true as boolean | number,
     showNavigation: true,
     showThumbnails: true,
-    onAdd: () => {}
+    onAdd: () => {},
+    changeEffect: () => {},
 }
 
 
