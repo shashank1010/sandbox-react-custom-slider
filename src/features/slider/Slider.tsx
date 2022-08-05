@@ -1,12 +1,23 @@
-import React, { memo } from "react";
+import React, { lazy, memo, Suspense } from "react";
 import { useAppSelector } from "../../app/store";
-import Navigation from "./Navigation";
+
 import { SliderProvider, useSliderContext } from "./SliderContext";
 
 import { SlideType, SliderStatus } from "./sliderSlice";
 
 import sliderStyles from "./slider.module.css"
 import cn from "classnames";
+
+const Navigation = lazy(async () => {
+    const [res] = await Promise.all([
+        import("./Navigation"),
+        new Promise((resolve, reject) => {
+            setTimeout(resolve, 1500)
+        })
+    ]);
+
+    return res;
+})
 
 interface SliderStatusParam {
     currentIndex: number;
@@ -46,7 +57,10 @@ const SliderWithContext: React.FC<Pick<SliderProps, "children">> = memo(({ child
             <div className={sliderStyles.sliderInner}>
                 { slides.map((slide, index) => children(slide, index, { currentIndex, status })) }
             </div>
-            <Navigation />
+
+            <Suspense fallback={<>Loading Navigation</>}>
+                <Navigation />
+            </Suspense>
         </div>
     );
 })
